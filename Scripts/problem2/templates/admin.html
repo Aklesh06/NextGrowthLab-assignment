@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    {% load static %}
+    <style>
+        body {
+            font-family: sans-serif;
+            width: 100%;
+            height: 93vh;
+            padding: 0;
+            background-color: rgb(217, 225, 231);
+        }
+        .username {
+            text-align: center;
+            background-color: rgb(237, 237, 237);
+            margin-bottom: 2em;
+        }
+        .divider {
+            display: flex;
+        }
+        nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+        }
+        .navbar {
+            display: flex;
+            flex-direction: column;
+            padding-left: 1em;
+            width: fit-content;
+            margin-left: 1em;
+        }
+        .navbar ul{
+            list-style: none;
+        }        
+        .active a .pages{
+            background-color: rgb(47, 0, 128);
+            color: white;
+        }
+        .pages {
+            background-color: rgb(237, 237, 237);
+            margin-top: 1em;
+            padding-left: 1em;
+            padding-right: 1em;
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+            border: 2px solid rgb(47, 0, 128);
+        }
+        a {
+            text-decoration: none;
+            color: rgb(47, 0, 128);
+        }
+        .container {
+            flex: 5;
+            background-color: rgb(239, 240, 245);
+            position: relative;
+            border: 2px solid rgb(193, 194, 196) ;
+            height: 100vh;
+        }
+        .box{
+            display: flex;
+            flex-direction: column;
+        }
+        form {
+            padding: 2em;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .icons{
+            margin: 2em;
+        }
+        .part1{
+            width: 50%;
+            margin: 1em;
+            display: flex;
+            justify-content: space-around;
+        }
+        .part2{
+            width: 50%;
+            margin: 1em;
+            display: flex;
+            justify-content: space-around;
+        }
+        .part3{
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            margin-top: 1em;
+        }
+        .views button{
+            width: 150px;
+            height: 40px;
+            padding-top:0.5em;
+            padding-bottom:0.5em;
+            padding-left:1em;
+            padding-right:1em;
+            background-color: rgb(77, 190, 169);
+            border-color: rgb(42, 175, 130);
+            font-weight: 700;
+        }
+        .noviews .points{
+            margin-bottom: 1em;
+        }
+        .noviews button{
+            margin-right: 5%;
+            width: 150px;
+            height: 40px;
+            padding-top:0.5em;
+            padding-bottom:0.5em;
+            padding-left:1em;
+            padding-right:1em;
+            background-color: rgba(239, 197, 83, 0.792);
+            border-color: rgb(189, 154, 48);
+            font-weight: 700;
+        }
+        .form-control{
+            width: 200px;
+            height: 30px;
+        }
+        .form-point{
+            width: 200px;
+            height: 30px;
+        }
+        .disp-points p{
+            text-align: center;
+            background-color: rgb(77, 190, 169);
+            border:2px solid  rgb(42, 175, 130);
+            padding-top:0.5em;
+            padding-bottom:0.5em;
+            padding-left:1em;
+            padding-right:1em;
+            box-shadow: 1px 1px black;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="username"><h3>Hello {{user.username}}</h3></div>
+    <div class="divider">
+        <nav class="nav_content">
+            <div class="navbar">
+                <ul>
+                    <li class="{% if 'adminHome' in request.path %}active{% endif %}">
+                        <a href="{% url 'adminHome' %}">
+                            <div class="pages">
+                                <img src={% static 'home.png' %} alt="home" width="13px" height="13px">
+                                <span>Home</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="{% if 'add_apps' in request.path %}active{% endif %}">
+                        <a href="{% url 'add_apps' %}">
+                            <div class="pages">
+                                <img src={% static 'add.png' %} alt="profile" width="13px" height="13px">
+                                <span>Add Apps</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="{% if 'logout' in request.path %}active{% endif %}">
+                        <a href="{% url 'logout' %}">
+                            <div class="pages">
+                                <img src={% static 'logout.jpg' %} alt="logout" width="13px" height="13px">
+                                <span>Logout</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">     
+            <div class="box">
+                <form method="POST" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="icons">
+                        <div id="drag-drop-area" class="drag-drop-area">
+                            <input type="file" name="icon" id="icon" accept="image/*" required hidden>
+                            <img id="img-prev" src="{% static 'default.png' %}" alt="Image Preview" style="max-width: 16em; max-height: 12em; border: 3px solid #ccc; margin-top: 10px;">
+                        </div>
+                    </div>
+                    <div class="part1">
+                        <div class="name">
+                            {{form.appName}}
+                        </div>
+                        <div class="link">
+                            {{form.appLink}}
+                        </div>
+                    </div>
+                    <div class="part2">
+
+                        <div class="category">
+                            {{form.category}}
+                        </div>
+                        <div class="subCategory">
+                            {{form.subCategory}}
+                        </div>
+                    </div>
+
+                    <div class="part3">
+                        <div class="noviews" id="noviews" style="display: none;">
+                            <div class="points">
+                                {{form.points}}
+                            </div>
+                            
+                            <div class="disp-points" style="display:none;">
+                                <p> <span id="disp-points"></span> POINTS </p>
+                            </div>
+                            <button type="submit">SUBMIT</button>
+                        </div>
+                        <div class="views" id="views">
+                            <button id="add-point">ADD POINTS</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+<script>
+    //for drag and drop input
+    document.getElementById('drag-drop-area').addEventListener('dragover', function(event) {
+        event.preventDefault();
+        this.style.borderColor = 'green';
+    });
+    
+    document.getElementById('drag-drop-area').addEventListener('dragleave', function(event) {
+        event.preventDefault();
+        this.style.borderColor = '#ccc';
+    });
+    
+    document.getElementById('drag-drop-area').addEventListener('drop', function(event) {
+        event.preventDefault();
+        this.style.borderColor = '#ccc';
+    
+        const file = event.dataTransfer.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+
+            reader.onload = function(e) {
+                document.getElementById('img-prev').src = e.target.result;
+                document.getElementById('icon').files = event.dataTransfer.files;
+            };
+            
+            reader.readAsDataURL(file);
+        } else {
+            alert('Please upload a valid image file.');
+        }
+    });
+    //for input by click
+    document.getElementById('drag-drop-area').addEventListener('click', function() {
+        document.getElementById('icon').click();
+    });
+    
+    document.getElementById('icon').addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            
+            reader.onload = function(e) {
+                document.getElementById('img-prev').src = e.target.result;
+            };
+            
+            reader.readAsDataURL(file);
+        } else {
+            alert('Please upload a valid image file.');
+        }
+    });
+
+    document.getElementById('add-point').addEventListener('click', function () {
+        const viewsDiv = document.getElementById('views');
+        const noviewsDiv = document.getElementById('noviews');
+        viewsDiv.style.display = 'none';
+        noviewsDiv.style.display = 'block'; 
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+        const pointsInput = document.querySelector('#points');
+        const pointsDisplay = document.querySelector('.disp-points'); 
+        const pointsParagraph = document.querySelector('#disp-points'); 
+
+        function toggleDisplay() {
+            if (pointsInput.value) {  
+                pointsParagraph.textContent = pointsInput.value;
+                pointsInput.style.display = 'none';
+                pointsDisplay.style.display = 'block';
+            }
+        }
+
+        pointsInput.addEventListener('change', toggleDisplay);
+        
+        
+        pointsDisplay.addEventListener('click', function() {
+            pointsInput.style.display = 'block';  
+            pointsDisplay.style.display = 'none';
+            pointsInput.focus();  
+        });
+    });
+    </script>
+    
+</html>
+

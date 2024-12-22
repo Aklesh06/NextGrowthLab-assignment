@@ -1,0 +1,3 @@
+venv : appvenv
+project name : problem2
+app name : mediascore

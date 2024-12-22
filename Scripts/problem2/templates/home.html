@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <title>Home Page</title>
+
+    <style>
+        body {
+            font-family: sans-serif;
+            width: 100%;
+            height: 93vh;
+            padding: 0;
+            background-color: rgb(217, 225, 231);
+        }
+        .username {
+            text-align: center;
+            background-color: rgb(237, 237, 237);
+            margin-bottom: 2em;
+        }
+        .divider {
+            display: flex;
+        }
+        nav {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: left;
+        }
+        .navbar {
+            display: flex;
+            flex-direction: column;
+            padding-left: 1em;
+            width: fit-content;
+            margin-left: 1em;
+        }
+        .navbar ul{
+            list-style: none;
+        }        
+        .active a .pages{
+            background-color: rgb(47, 0, 128);
+            color: white;
+        }
+        .pages {
+            background-color: rgb(237, 237, 237);
+            margin-top: 1em;
+            padding-left: 1em;
+            padding-right: 1em;
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+            border: 2px solid rgb(47, 0, 128);
+        }
+        a {
+            text-decoration: none;
+            color: rgb(47, 0, 128);
+        }
+        .container {
+            flex: 5;
+            background-color: rgb(239, 240, 245);
+            position: relative;
+            border: 2px solid rgb(193, 194, 196) ;
+            height: 100vh;
+        }
+        .box{
+            max-height: 100%;
+            overflow-y: auto
+        }
+        .app {
+            margin: 1em;
+            background-color: rgb(202, 209, 216);
+            border: 1px solid rgb(118, 118, 118);
+        }
+        .app .empty{
+            text-align: center;
+        }
+        .app ul{
+            list-style: none;
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+        }
+        .app .info{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-between;
+            margin-right: 2em;
+        }
+        .app .info .part1{
+            display: flex;
+            flex-direction: row;
+        }
+        .app .info .appdata{
+            display: flex;
+            margin-left: 1em;
+            align-items: left;
+            flex-direction: column;
+            justify-content: center;
+        }
+        .app .info .appdata .appname{
+            font-size: 1.5em;
+            font-weight: 700;
+        }
+        .app .info li a{
+            text-decoration: underline;
+        }
+        .app .info .point{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            margin-right: 2em;
+            padding-right: 1em;
+        }
+        .app .info .point span{
+            color: rgb(58, 159, 55);
+            margin-bottom: 1em;
+        }
+        .app .info .point button{
+            background-color: rgb(77, 190, 169);
+            font-size: 1em;
+            padding-left: 1em;
+            padding-right: 1em;
+            padding-top: 0.5em;
+            padding-bottom: 0.5em;
+        }
+
+    </style>
+</head>
+<body>
+    <div class="username"><h3>Hello {{user.username}}</h3></div>
+    <div class="divider">
+        <nav class="nav_content">
+            <div class="navbar">
+                <ul>
+                    <li class="{% if 'home' in request.path %}active{% endif %}">
+                        <a href="{% url 'home' %}">
+                            <div class="pages">
+                                <img src={% static 'home.png' %} alt="home" width="13px" height="13px">
+                                <span>Home</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="{% if 'profile' in request.path %}active{% endif %}">
+                        <a href="{% url 'profile' %}">
+                            <div class="pages">
+                                <img src={% static 'profile.jpg' %} alt="profile" width="13px" height="13px">
+                                <span>Profile</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="{% if 'points' in request.path %}active{% endif %}">
+                        <a href="{% url 'points' %}">
+                            <div class="pages">
+                                <img src={% static 'points.png' %} alt="points" width="13px" height="13px">
+                                <span>Points</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="{% if 'tasks' in request.path or 'claimpoint' in request.path %}active{% endif %}">
+                        <a href="{% url 'tasks' %}">
+                            <div class="pages">
+                                <img src={% static 'task.png' %} alt="task" width="13px" height="13px">
+                                <span>Task</span>
+                            </div>
+                        </a>
+                    </li>
+                    <li class="{% if 'logout' in request.path %}active{% endif %}">
+                        <a href="{% url 'logout' %}">
+                            <div class="pages">
+                                <img src={% static 'logout.jpg' %} alt="logout" width="13px" height="13px">
+                                <span>Logout</span>
+                            </div>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+        <div class="container">
+            <div class="box">
+                {% if clientinfo.appNames|length != 0 %}
+                {% for app in all_app%}
+                {% if app.appName in clientinfo.appNames%}
+                <div class="app">
+                    <ul>
+                        <div class="info">
+                            <div class="part1">
+                                <div class="appimage">
+                                    <li>
+                                        <img src="{{app.icon.url}}"  height="100px" width="100px">
+                                    </li>
+                                </div>
+                                <div class="appdata">
+                                    <li><span class="appname">{{app.appName}}</span></li>
+                                    <li><a href={{app.appLink}}>View in Detail &gt;</a></li>
+                                </div>
+                            </div>
+                            <div class="point">
+                                <span>Claimed</span>
+                                <button disabled>{{app.points}} Points</button>
+                            </div> 
+                        </div>
+                    </ul>
+                </div>    
+                {% endif %}
+                {% endfor %}
+                {% else %}
+                    <div class='app'>
+                        <p class="empty">Check Task To Claim Points</p>
+                    </div>
+                {% endif %}
+            </div>         
+        </div>
+    </div>
+</body>
+</html>
