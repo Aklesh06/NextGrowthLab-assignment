@@ -21,7 +21,7 @@
       },
       {
         "src": "/(.*)",
-        "dest": "problem2/wsgi.py"
+        "dest": "/manage.py"
       }
     ]
   }
