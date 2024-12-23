@@ -16,5 +16,11 @@
         "src": "/(.*)",
         "dest": "problem2/wsgi.py"
       }
+    ],
+    "rewrites": [
+      { 
+        "source": "/(.*)", 
+        "destination": "/" 
+      }
     ]
   }
