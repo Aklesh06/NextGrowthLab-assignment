@@ -4,9 +4,13 @@
     {
       "src": "problem2/wsgi.py",
       "use": "@vercel/python",
+      "config": { "maxLambdaSize": "15mb", "runtime": "python3.11.1" }
+    },
+    {
+      "src": "build_files.sh",
+      "use": "@vercel/static-build",
       "config": {
-        "maxLambdaSize": "50mb",
-        "runtime": "python3.11"
+        "distDir": "staticfiles"
       }
     }
   ],
