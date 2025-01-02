@@ -1,4 +1,4 @@
 #!/bin/bash
 
 pip install -r requirements.txt
-python3.11 manage.py collectstatic 
+python3.13 manage.py collectstatic 
