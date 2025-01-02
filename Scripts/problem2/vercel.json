@@ -4,7 +4,7 @@
       {
         "src": "problem2/wsgi.py",
         "use": "@vercel/python",
-        "config": {"runtime": "python3.11","buildCommand": "bash build_files.sh" }
+        "config": {"runtime": "python3.13","buildCommand": "bash build_files.sh" }
       }
     ],
     "routes": [
